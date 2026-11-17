@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 __pycache__/
 *.pyc
 engine.py
+=======
+tiny_chess.py
+__pycache__/
+*.pyc
+>>>>>>> origin/main
