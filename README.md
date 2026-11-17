@@ -31,9 +31,9 @@ environment protocol: no clock, no randomness, a fixed node budget per move.
   start position 20/400/8,902/197,281; Kiwipete 48/2,039/97,862;
   position 3 14/191/2,812/43,238; position 4 6/264/9,467; position 5 44/1,486/62,379.
 - Finds mate in one (Scholar, back rank) and takes free material.
-- Practice trial: 2 wins, 3 draws, 1 loss against the house gauntlet,
-  Elo 1364 on the six-game practice set (floor 1154, house baseline 1365).
-- `main.py` is 3,993 bytes; the whole snapshot is under 8,192 bytes.
+- Practice trial: 3 wins, 2 draws, 1 loss against the house gauntlet,
+  Elo 1451 on the practice set, two games unbeaten (floor 1154).
+- `main.py` is 3,990 bytes; the whole snapshot is under 8,192 bytes.
 
 ## License
 
