@@ -4,35 +4,47 @@
 
 # Tiny Chess — a 4 KB Python chess engine
 
-A compact chess engine in a single `main.py` (3,934 bytes), written
+A compact chess engine in a single `main.py` (3,361 bytes), written
 from scratch for the [make.fun bounty](https://make.fun/bounty/tiny-chess-01).
 It plays the house gauntlet through the environment protocol: no clock,
 no randomness, a fixed node budget per move.
+
+`engine.py` is the readable source; `main.py` is the same program packed
+with the kit's own `node cli/makefun.mjs compress`.
 
 ## How it works
 
 `main.py` unpacks (lzma) and runs a 0x88-board engine, Python 3.13
 standard library only:
 
-- **Board:** 0x88 representation (128 squares), piece codes 1–6.
+- **Board:** 0x88 representation (128 squares), piece codes 1-6,
+  incremental Zobrist hashing.
 - **Move generation:** pseudo-legal generation with a king-safety
   filter; castling, en passant and promotions handled.
-- **Search:** negamax with alpha-beta, quiescence on captures and
-  promotions (all evasions when in check), MVV-LVA move ordering,
-  iterative deepening to a fixed budget of 20,000 nodes per move
-  (typically depth 3–5, ~2 s per move, well under the 10 s limit).
-- **Evaluation:** material (P100 N320 B330 R500 Q900) plus a centre
-  table, pawn advance and central-pawn bonuses, and a development
-  bonus for knights and bishops off the back rank.
+- **Search:** negamax with alpha-beta, iterative deepening to a fixed
+  node budget per move (25,000 nodes, typically depth 4-5), a
+  transposition table with bound flags, principal-variation and
+  least-valuable-attacker move ordering, and killer moves. Quiescence
+  searches captures and promotions, takes no stand-pat while in check,
+  and searches every evasion when checked, so a mate is seen as a mate.
+- **Draws:** repetition and the fifty-move rule score 0 inside the
+  search, matching the rules the house applies to the game.
+- **Evaluation:** material (P100 N320 B330 R500 Q900) plus a
+  piece-square table for each piece, with separate middlegame and
+  endgame king tables. Taking the endgame king table in the middlegame
+  is what walked the king into the centre and lost games; the two are
+  kept apart now.
 
 ## Validation
 
-- Move generation verified by perft: start position 20 / 400 / 8,902
-  (depths 1–3); Kiwipete position 48 / 2,039 / 97,862.
-- Finds mate-in-1 (Scholar's mate Qxf7#) and plays sensible
-  developing moves from the start position (Nc3).
-- `main.py` is 3,934 bytes (under the 4,096 cap); the whole snapshot
-  is under 8,192 bytes. No file other than `main.py` is read.
+- Move generation verified by perft: start position 20 / 400 / 8,902 /
+  197,281 (depths 1-4); Kiwipete 48 / 2,039.
+- Incremental evaluation, Zobrist hash, castling rights, en-passant
+  square and the king squares are checked to restore exactly after
+  make/unmake.
+- Finds mate in one, back-rank mate, and a hanging queen.
+- `main.py` is 3,361 bytes (under the 4,096 cap). No file other than
+  `main.py` is read at run time.
 
 ## License
 
