@@ -4,13 +4,16 @@
 
 # Tiny Chess — a 4 KB Python chess engine
 
-A compact chess engine in a single `main.py` (3,361 bytes), written
+A compact chess engine in a single `main.py` (3,508 bytes), written
 from scratch for the [make.fun bounty](https://make.fun/bounty/tiny-chess-01).
 It plays the house gauntlet through the environment protocol: no clock,
 no randomness, a fixed node budget per move.
 
-`engine.py` is the readable source; `main.py` is the same program packed
-with the kit's own `node cli/makefun.mjs compress`.
+`main.py` is the readable source packed with the kit's own
+`node cli/makefun.mjs compress`. The readable source is what the
+transcript bundle carries beside the sessions; it is not committed,
+because the competition caps every file at 4,096 bytes and a source
+spelling out the tables is larger than that.
 
 ## How it works
 
@@ -43,8 +46,9 @@ standard library only:
   square and the king squares are checked to restore exactly after
   make/unmake.
 - Finds mate in one, back-rank mate, and a hanging queen.
-- `main.py` is 3,361 bytes (under the 4,096 cap). No file other than
-  `main.py` is read at run time.
+- `main.py` is 3,508 bytes (under the 4,096 cap) and the tree is four
+  files, 7,337 bytes (under the 8,192 cap). No file other than `main.py`
+  is read at run time.
 
 ## License
 
